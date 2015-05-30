@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="easeljs-0.7.1.min.js"></script>
+		<script>
+			function init() {
+				var stage = new createjs.Stage("demoCanvas");
+				
+				var circle = new createjs.Shape();
+					circle.graphics.beginFill("red").drawCircle(0, 0, 50);
+					circle.x = 100;
+					circle.y = 100;
+				
+				var circleMoving = 0;
+				
+				stage.addChild(circle);
+				stage.update();
+				
+				//Update stage will render next frame
+				createjs.Ticker.addEventListener("tick", handleTick);
+				createjs.Ticker.paused = true;
+				
+				stage.addEventListener("click", handleClick);
+
+				function handleTick() {
+					if (circleMoving == 1){
+						//Circle will move 10 units to the right.
+						circle.x += 10;
+						
+						//Will cause the circle to wrap back
+						if (circle.x > stage.canvas.width) { circle.x = 0; }
+						
+						stage.update();
+					}
+				}
+
+				function handleClick(event){
+					//alert("here" + circleMoving);
+					
+					if (circleMoving == 1){
+						circleMoving = 0;
+						createjs.Ticker.paused = true;					
+					} else {
+						circleMoving = 1;
+						createjs.Ticker.paused = false;
+					}
+				}
+			}
+		</script>
+	</head>
+	<body onLoad="init();">
+		<canvas id="demoCanvas" width="500" height="300">
+			alternate content
+		</canvas>
+	</body>
+</html>

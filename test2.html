@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="easeljs-0.7.1.min.js"></script>
+		<script>
+			function init() {
+				//var circleMoving = 0;
+				var ballGrow = 0;
+				var currentScale = 1;
+				
+				var stage = new createjs.Stage("demoCanvas");
+				
+				var circle = new createjs.Shape();
+					circle.graphics.beginFill("red").drawCircle(0, 0, 50);
+					circle.x = 250;
+					circle.y = 250;
+					
+				var circle2 = new createjs.Shape();
+					circle2.graphics.beginFill("blue").drawCircle(0, 0, 1);
+					circle2.x = 250;
+					circle2.y = 250;
+					circle2.visible = false;
+				
+				stage.addChild(circle);
+				stage.addChild(circle2);
+				stage.update();
+				
+				//Update stage will render next frame
+				createjs.Ticker.addEventListener("tick", handleTick);
+				createjs.Ticker.paused = true;
+				
+				stage.addEventListener("click", handleClick);
+				stage.addEventListener("mousedown", handleMousedown);
+				stage.addEventListener("pressup", handleMouseup);
+
+				function handleTick() {
+					if (ballGrow == 1){
+						circle.scaleX =  circle.scaleX * 1.009;
+						circle.scaleY =  circle.scaleY * 1.009;
+					} else {
+						if (circle.scaleX > 1){
+							circle.scaleX =  circle.scaleX / 1.007;
+							circle.scaleY =  circle.scaleY / 1.007;
+						}
+					}
+					
+					currentScale = circle.scaleX;
+					
+					if (currentScale > 10){
+						circle2.visible = true;
+						if (ballGrow == 1){
+							circle2.scaleX =  circle2.scaleX * 1.009;
+							circle2.scaleY =  circle2.scaleY * 1.009;
+						} else {
+							if (circle2.scaleX > 1){
+								circle2.scaleX =  circle2.scaleX / 1.007;
+								circle2.scaleY =  circle2.scaleY / 1.007;
+							}
+						}
+					} else {
+						circle2.visible = false;
+					}
+					
+					
+					
+					//console.log("scale: " + circle.scaleX);
+					stage.update();
+					
+				}
+
+				function handleClick(event){
+					
+				}
+				
+				function handleMousedown(event){
+					ballGrow = 1;
+					createjs.Ticker.paused = false;
+				}
+				
+				function handleMouseup(event){
+					ballGrow = 0;
+					createjs.Ticker.paused = true;
+				}
+			}
+		</script>
+	</head>
+	<body onLoad="init();"> <!-- width="500" height="500" style="background-color:lightblue; width:100%; height:100%; min-height:500px;" -->
+		<canvas id="demoCanvas" width="500" height="500" style="background-color:lightblue;">
+			alternate content
+		</canvas>
+		
+		<!--<style>
+			canvas {
+				/*height: 98vh; 
+				width: 98vw;
+				*/
+				width:500px;
+				height:500px;
+				background-color:lightblue;
+				position: absolute; 
+				overflow: hidden;
+			}
+		</style>-->
+		
+	</body>
+</html>
